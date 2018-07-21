@@ -4,7 +4,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
         <script src="{{ url_for('static', filename='index.js') }}"></script>
+        <script>
+
+        </script>
         <title>Web Chat</title>
     </head>
     <body onload="retrieved_name()">
@@ -22,30 +26,25 @@
                 </div>
             </form>
             <form>
-                <div>
-                    <br>
-                    <h3>Search Bar</h3>
-                    <input class="form-control" id="search_bar" text="text" name="search_bar" placeholder="Search Bar">
-                    <br>
-                    <button class="btn btn-primary">Create Channel</button>
-                    <br>
+                <h3>Create a New Channel</h3>
+                <div class="form-group">
+                    <input id="channel_input" class="form-control" text="text" name="channel_input" placeholder="Create Channel">
                 </div>
-            </form>
-            <form>
-                <div>
-                    <br>
-                    <h3>Create a New Channel</h3>
-                    <input class="form-control" id="new_channel" text="text" name="new_channel" placeholder="Create Channel">
+                <div class="form-group">
+                    <button id="button_create" class="btn btn-primary" type="button" onclick="add_channel()">Create Channel</button>
                 </div>
             </form>
             <div>
                 <br>
                 <h3>Select a Channel</h3>
-                <select class="form-control>"></select>
+                <select id="chn_name" class="form-control>"></select>
                 <br>
             </div>
         </div>
-        <div class="col-9" style="background-color: #000000">
+        <div class="col-9">
+            <div class="form-group">
+                <input id="message_box" class="form-control" text="text" name="message_box" text="text" placeholder="Type a message...">
+            </div>
         </div>
     </body>
 </html>
