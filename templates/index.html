@@ -7,43 +7,55 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
         <script src="{{ url_for('static', filename='index.js') }}"></script>
         <script>
-
         </script>
         <title>Web Chat</title>
     </head>
     <body onload="retrieved_name()">
         <div class="jumbotron"><center><h1>Web Chat</h1></center></div>
         <br>
-        <div class="col-3" style="background-color: #37daf7">
-            <form>
-                <br>
-                <h3 id="displayname">Type in Your Name</h3>
+        <div class="row">
+            <div class="col-3" style="background-color: #37daf7">
+                <form>
+                    <br>
+                    <h3 id="displayname">Type in Your Name</h3>
+                    <div>
+                        <input class="form-control" id="disp_username" text="text" name="disp_username" placeholder="Display Username">
+                        <br>
+                        <button class="btn btn-primary" onclick="disp_name()" type="submit">Submit</button>
+                        <br>
+                    </div>
+                </form>
+                <form>
+                    <h3>Create a New Channel</h3>
+                    <div class="form-group">
+                        <input id="channel_input" class="form-control" text="text" name="channel_input" placeholder="Create Channel">
+                    </div>
+                    <div class="form-group">
+                        <button id="button_create" class="btn btn-primary" type="button" onclick="add_channel()">Create Channel</button>
+                    </div>
+                </form>
                 <div>
-                    <input class="form-control" id="disp_username" text="text" name="disp_username" placeholder="Display Username">
                     <br>
-                    <button class="btn btn-primary" onclick="disp_name()" type="submit">Submit</button>
+                    <h3>Select a Channel</h3>
+                    <select id="chn_name" class="form-control>"></select>
                     <br>
                 </div>
-            </form>
-            <form>
-                <h3>Create a New Channel</h3>
-                <div class="form-group">
-                    <input id="channel_input" class="form-control" text="text" name="channel_input" placeholder="Create Channel">
-                </div>
-                <div class="form-group">
-                    <button id="button_create" class="btn btn-primary" type="button" onclick="add_channel()">Create Channel</button>
-                </div>
-            </form>
-            <div>
-                <br>
-                <h3>Select a Channel</h3>
-                <select id="chn_name" class="form-control>"></select>
-                <br>
             </div>
-        </div>
-        <div class="col-9">
-            <div class="form-group">
-                <input id="message_box" class="form-control" text="text" name="message_box" text="text" placeholder="Type a message...">
+            <div class="col-9">
+                <form>
+                    <div class="form-group">
+                        <input id="message_box" class="form-control" text="text" name="message_box" text="text" placeholder="Type a message..."/>
+                    </div>
+                    <div class="form-group">
+                        <button id="message_submit" class="btn btn-primary" type="button" onclick="set_msg()" onclick="transfer()" data-submit="input_val()">Send a Message...</button>
+                    </div>
+                </form>
+                {% for m in messages %}
+                    <div><span id="msgs">{{ messages[m] }}</span></div>
+                {% endfor %}
+                <div>{{ messages }}</div>
+                <ul id="msgs_sent">
+                </ul>
             </div>
         </div>
     </body>

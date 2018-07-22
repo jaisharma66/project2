@@ -8,16 +8,16 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
 # list of all channels
-channel_list = ['general']
+
 messages = []
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", messages=messages)
 
-# @app.route("/messages", methods=["POST"])
-# def messages():
-
-
-if __name__ == "__main__":
-    index();
+@socketio.on("submit message")
+def submit(data):
+    print(data, "this is the data")
+    selection = data
+    messages.append(selection)
+    emit("message_sent", data, broadcast=True)
