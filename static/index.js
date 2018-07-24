@@ -8,10 +8,10 @@ function disp_name()
 }
 
 
-function set_msg()
-{
-    cur_msg = document.querySelector('#message_box').value;
-}
+// function set_msg()
+// {
+//     cur_msg = document.querySelector('#message_box').value;
+// }
 
 function retrieved_name()
 {
@@ -41,10 +41,10 @@ function retrieved_name()
 //     selection.insertAdjacentHTML('beforeEND', selection.join('\n'));
 // }
 
-function input_val()
-{
-    return cur_msg;
-}
+// function input_val()
+// {
+//     return cur_msg;
+// }
 
 document.addEventListener('DOMContentLoaded', () =>
 {
@@ -59,10 +59,19 @@ document.addEventListener('DOMContentLoaded', () =>
     socket.on('connect', () => {
         document.querySelectorAll('#message_submit').forEach(button => {
             button.onclick = () => {
+                alert("button clicked");
                 var date = new Date();
-                set_msg();
-                const selection = eval(button.dataset.submit);
-                socket.emit('submit message', selection);
+                var name = localStorage.getItem('usernmae');
+                var set_msg = document.querySelector('#message_box').value;
+                var list = document.querySelector('#chn_name');
+                var curr_channel = list.options[list.selectedIndex].value;
+                alert(curr_channel + "current channel");
+                socket.emit('submit message', {"date" : date.toString(), "name": name, "set_msg": set_msg, "curr_channel": curr_channel});
+
+                // var date = new Date();
+                // set_msg();
+                // const selection = eval(button.dataset.submit);
+                // socket.emit('submit message', selection);
             };
         });
 
@@ -74,22 +83,34 @@ document.addEventListener('DOMContentLoaded', () =>
                 socket.emit('channel added', channel_added);
             };
         });
-        socket.emit('connection validated');
+        // var list = document.querySelector('#chn_name');
+        // var curr_channel = list.options[list.selectedIndex].value;
+        socket.emit('connection validated', curr_channel);
         socket.emit('current messaging');
     });
 
-    socket.on('current messaging returned', curr_msg => {
-        var selectlist = document.querySelector('#msgs_sent');
-        var i;
-        for(i = selectlist.option.length - 1; i >= 0; i--)
+    socket.on('current messaging returned', messages => {
+        // var selectlist = document.querySelector('#msgs_sent').getElementsByTagName('li');
+        // alert(selectlist, "what is this work???");
+        // var i;
+        // for(i = selectlist.options.length - 1; i >= 0; i--)
+        // {
+        //     selectlist.remove(i);
+        // }
+        alert(messages, "socketon curr msgs");
+        alert(messages.length, "length");
+        try
         {
-            selectlist.remove(i);
+            for(var x = 1; x < messages.length; x++)
+            {
+                const msg_display = document.createElement('li');
+                msg_display.innerHTML = `${messages[x]}`;
+                document.querySelector('#msgs_sent').append(msg_display);
+            }
         }
-        for(var x = 0; x < curr_msg.length; x++)
+        catch(err)
         {
-            const msg_display = document.createElement('li');
-            msg_display.innerHTML = `${msg_display[x]}`;
-            document.querySelector('#msgs_sent').append(msg_display);
+            alert("All Messages Loaded!");
         }
     });
 
@@ -104,16 +125,16 @@ document.addEventListener('DOMContentLoaded', () =>
         alert("new " + loaded_channels);
         for(var x = 0; x < loaded_channels.length; x++){
             const option_load = document.createElement('option');
-            alert(loaded_channels[x]);
+            alert(loaded_channels[x], "channels that have been loaded");
             option_load.innerHTML = `${loaded_channels[x]}`;
             document.querySelector('#chn_name').append(option_load);
         }
     });
 
-
     socket.on('message_sent', data => {
+        alert("This is america", data);
         const li = document.createElement('li');
-        li.innerHTML = `${data}`;
+        li.innerHTML = `${data["set_msg"]}`;
         document.querySelector('#msgs_sent').append(li);
     });
 

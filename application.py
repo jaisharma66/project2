@@ -10,18 +10,20 @@ socketio = SocketIO(app)
 # list of all channels
 channel_list = ['general']
 messages = []
+channel_list_msg = {'general': None}
 
 @app.route("/")
 def index():
-    return render_template("index.html", messages=messages)
+    return render_template("index.html")
 
 @socketio.on("current messaging")
 def load_curr_msg():
-    curr_msg = messages;
-    emit("current messaging returned", curr_msg)
+    messages = channel_list_msg["general"]
+    emit("current messaging returned", messages)
 
 @socketio.on("connection validated")
-def connection_valid():
+def connection_valid(data):
+
     loaded_channels = channel_list
     print(loaded_channels)
     emit('channels_lists', loaded_channels, broadcast=True)
@@ -30,7 +32,7 @@ def connection_valid():
 def submit(data):
     print(data, "this is the data")
     selection = data
-    messages.append(selection)
+    channel_list_msg[data["curr_channel"]] = data["set_msg"]
     emit("message_sent", data, broadcast=True)
 
 @socketio.on("channel added")
@@ -39,6 +41,6 @@ def added(data):
     for i in range(len(channel_list)):
         if data == channel_list[i]:
             return;
-    channel_list.append(data)
+    channel_list_msg[data] = None
     new_channel = data
     emit("created new channel", new_channel, broadcast=True)
