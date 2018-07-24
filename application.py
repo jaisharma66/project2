@@ -17,14 +17,13 @@ def index():
     return render_template("index.html")
 
 @socketio.on("current messaging")
-def load_curr_msg():
-    messages = channel_list_msg["general"]
-    emit("current messaging returned", messages)
+def load_curr_msg(data):
+    passed_data = {"data": data, "channel_list_msg": channel_list_msg}
+    emit("current messaging returned", passed_data, broadcast=True)
 
 @socketio.on("connection validated")
-def connection_valid(data):
-
-    loaded_channels = channel_list
+def connection_valid():
+    loaded_channels = list(channel_list_msg.keys())
     print(loaded_channels)
     emit('channels_lists', loaded_channels, broadcast=True)
 
@@ -44,3 +43,4 @@ def added(data):
     channel_list_msg[data] = None
     new_channel = data
     emit("created new channel", new_channel, broadcast=True)
+
