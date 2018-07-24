@@ -31,7 +31,7 @@
                         <input id="channel_input" class="form-control" text="text" name="channel_input" placeholder="Create Channel">
                     </div>
                     <div class="form-group">
-                        <button id="button_create" class="btn btn-primary" type="button" onclick="add_channel()">Create Channel</button>
+                        <button id="button_create" class="btn btn-primary" type="button">Create Channel</button>
                     </div>
                 </form>
                 <div>
@@ -50,10 +50,7 @@
                         <button id="message_submit" class="btn btn-primary" type="button" onclick="set_msg()" onclick="transfer()" data-submit="input_val()">Send a Message...</button>
                     </div>
                 </form>
-                {% for m in messages %}
-                    <div><span id="msgs">{{ messages[m] }}</span></div>
-                {% endfor %}
-                <div>{{ messages }}</div>
+
                 <ul id="msgs_sent">
                 </ul>
             </div>
